@@ -6045,8 +6045,6 @@ Content-Type | application/json |
 
 # Search
 
-# Sitemap
-
 # Summary
 
 # Trends
