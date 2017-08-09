@@ -1678,14 +1678,19 @@ This endpoint retrieves the coupon info from Stripe.
 
 ### HTTP Request
 
-`GET http://api.mashvisor.com/v1/coupon`
+`GET http://api.mashvisor.com/v1/coupon/{coupon}`
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+coupon | String | | The promo code you want to discount of, ex.: Labor40
 
 ### Query Parameters
 
 Parameter | Value | Default | Description
 --------- | ------- | ------- | -----------
 plan | String | | Stripe's subscription plan, ex: Mashvisor_Basic
-coupon | String | | The promo code you want to discount of, ex.: Labor40
 
 ## Unsubscribe
 
@@ -6047,7 +6052,410 @@ Content-Type | application/json |
 
 # Summary
 
+## Get City Summary
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1.1/summary/listing/IL/Chicago?_t=meowmeowmeow")
+  .get()
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1.1/summary/listing/IL/Chicago?_t=meowmeowmeow",
+  "method": "GET"
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1.1/summary/listing/IL/Chicago');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1.1/summary/listing/IL/Chicago?_t=meowmeowmeow"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": "success",
+    "content": {
+        "airbnb_listings": 2286,
+        "traditional_listings": 12930,
+        "investment_properties": 3438,
+        "active_neighborhoods": 222,
+        "avg_occupancy": "44.9857",
+        "avg_nightly_price": "150.5355",
+        "avg_property_price": "423929.3589",
+        "avg_airbnb_ROI": 1.3229142864480714,
+        "avg_traditional_ROI": 1.97556615152836
+    }
+}
+```
+
+This endpoint retrieves a summary of airbnb properties, traditional properties, investment properties, and active neighborhoods available on Mashvisor.com for a specific .
+
+### HTTP Request
+
+`GET http://api.mashvisor.com/v.1/summary/listing` 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+state | String* | | State name, ex: NV.
+city | Integer | | City name, ex: Las Vegas.
+
 # Trends
+
+## List Cities
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1.1/trends/cities?state=CA&items=3")
+  .get()
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1.1/trends/cities?state=CA&items=3",
+  "method": "GET"
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1.1/trends/cities');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  'state' => 'CA',
+  'items' => '3'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1.1/trends/cities?state=CA&items=3"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": "success",
+    "content": {
+        "total_results": 3,
+        "current_page": 1,
+        "state": "CA",
+        "cities": [
+            {
+                "city": "San Francisco",
+                "state": "CA",
+                "occupancy": "51.23301023",
+                "total_listing": "8505",
+                "occ_listing": "435736.75198064"
+            },
+            {
+                "city": "Los Angeles",
+                "state": "CA",
+                "occupancy": "40.68916374",
+                "total_listing": "8861",
+                "occ_listing": "360546.67986470"
+            },
+            {
+                "city": "Long Beach",
+                "state": "CA",
+                "occupancy": "44.20128261",
+                "total_listing": "1685",
+                "occ_listing": "74479.16119448"
+            }
+        ]
+    }
+}
+```
+
+This endpoint retrieves the cities has the biggest occupancy in a specific state. 
+
+### HTTP Request
+
+`GET http://api.mashvisor.com/v.1/trends/citites` 
+
+### Query Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+state | String* | | State name, ex: NV.
+page | Integer | 1 | The page to return the content for. Valid values:1, ... etc.
+items | Integer | 5 | The items to return the content for. Valid values: 10, ... etc.
+
+## List Neighborhoods
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1.1/trends/neighborhoods?state=IL&city=Chicago&items=3")
+  .get()
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1.1/trends/neighborhoods?state=IL&city=Chicago&items=3",
+  "method": "GET"
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1.1/trends/neighborhoods');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  'state' => 'IL',
+  'city' => 'Chicago',
+  'items' => '3'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1.1/trends/neighborhoods?state=IL&city=Chicago&items=3"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": "success",
+    "content": {
+        "total_results": 3,
+        "current_page": 1,
+        "state": "IL",
+        "city": "Chicago",
+        "neighborhoods": [
+            {
+                "id": 269585,
+                "name": "Humboldt Park",
+                "city": "Chicago",
+                "state": "IL",
+                "occupancy": "55.40430000",
+                "total_listing": 47,
+                "description": null,
+                "single_home_value": 520000,
+                "single_home_value_formatted": "$520,000",
+                "investment_rentals": {
+                    "airbnb_rental": {
+                        "roi": 2.206806357417788,
+                        "cap_rate": 4.275257478632692,
+                        "rental_income": 1852.6115740741664
+                    },
+                    "traditional_rental": {
+                        "roi": 0.2465075217187405,
+                        "cap_rate": 3.185552884615385,
+                        "rental_income": 1380.40625
+                    }
+                },
+                "mashMeter": 57.7665
+            },
+            {
+                "id": 269592,
+                "name": "Logan Square",
+                "city": "Chicago",
+                "state": "IL",
+                "occupancy": "55.10080000",
+                "total_listing": 119,
+                "description": null,
+                "single_home_value": 350000,
+                "single_home_value_formatted": "$350,000",
+                "investment_rentals": {
+                    "airbnb_rental": {
+                        "roi": 3.7590651363134384,
+                        "cap_rate": 6.757881386799999,
+                        "rental_income": 1971.0487378166665
+                    },
+                    "traditional_rental": {
+                        "roi": 1.5805461276322603,
+                        "cap_rate": 5.608165714285714,
+                        "rental_income": 1635.715
+                    }
+                },
+                "mashMeter": 58.353
+            },
+            {
+                "id": 403312,
+                "name": "Ukrainian Village",
+                "city": "Chicago",
+                "state": "IL",
+                "occupancy": "54.73170000",
+                "total_listing": 41,
+                "description": null,
+                "single_home_value": 464500,
+                "single_home_value_formatted": "$464,500",
+                "investment_rentals": {
+                    "airbnb_rental": {
+                        "roi": 2.949021758402095,
+                        "cap_rate": 6.284044771359168,
+                        "rental_income": 2432.448996913611
+                    },
+                    "traditional_rental": {
+                        "roi": 0.749465583878405,
+                        "cap_rate": 4.492094725511302,
+                        "rental_income": 1738.815
+                    }
+                },
+                "mashMeter": 62.044
+            }
+        ]
+    },
+    "message": "City Overview fetched successfully"
+}
+```
+
+This endpoint retrieves the neighborhoods has the biggest occupancy in a specific city and state. 
+
+### HTTP Request
+
+`GET http://api.mashvisor.com/v.1/trends/neighborhoods` 
+
+### Query Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+state | String* | | State name, ex: NV.
+city | String* | | city name, ex: Las Vegas.
+page | Integer | 1 | The page to return the content for. Valid values:1, ... etc.
+items | Integer | 5 | The items to return the content for. Valid values: 10, ... etc.
+desc | Boolean | false | If it's true, it'll fetch the neighborhood description and single home values in the request response
 
 # User
 
@@ -6737,6 +7145,12 @@ Parameter | Value | Default
 --------- | ------- | ------- 
 Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
 
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
 ## Update Profile
 
 ```java
@@ -6853,6 +7267,12 @@ Parameter | Value | Default
 --------- | ------- | ------- 
 Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} |
 Content-Type | application/x-www-form-urlencoded |
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
 
 ### Form Parameters
 
@@ -6997,6 +7417,12 @@ Parameter | Value | Default
 Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} |
 Content-Type | application/x-www-form-urlencoded |
 
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
 ### Form Parameters
 
 Parameter | Value | Default | Description
@@ -7114,44 +7540,2901 @@ This endpoint logouts the user from Mashvisor.
 
 ## Activate Registeration
 
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/%7Buser_id%7D/activate/%7Btoken%7D")
+  .get()
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/%7Buser_id%7D/activate/%7Btoken%7D",
+  "method": "GET"
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/%7Buser_id%7D/activate/%7Btoken%7D');
+$request->setMethod(HTTP_METH_GET);
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/%7Buser_id%7D/activate/%7Btoken%7D"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": "success",
+    "content": null,
+    "message": "User account activated successfully"
+}
+```
+
+This endpoint logouts the user from Mashvisor.
+
+### HTTP Request
+
+`GET http://api.mashvisor.com/v1/user/{user_id}/activate/{token}` 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+token | String | | The Mashvisor generated token to confirm user subscription.
+
 ## Update Password
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+RequestBody body = RequestBody.create(mediaType, "password=newPassword&oldPassword=myComplexPassword");
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/password/update")
+  .post(body)
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .addHeader("content-type", "application/x-www-form-urlencoded")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/password/update",
+  "method": "POST",
+  "headers": {
+    "authorization": "Bearer {JWT_TOKEN}",
+    "content-type": "application/x-www-form-urlencoded"
+  },
+  "data": {
+    "password": "newPassword",
+    "oldPassword": "myComplexPassword"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/password/update');
+$request->setMethod(HTTP_METH_POST);
+
+$request->setHeaders(array(
+  'content-type' => 'application/x-www-form-urlencoded',
+  'authorization' => 'Bearer {JWT_TOKEN}'
+));
+
+$request->setContentType('application/x-www-form-urlencoded');
+$request->setPostFields(array(
+  'password' => 'newPassword',
+  'oldPassword' => 'myComplexPassword'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/password/update"
+
+	payload := strings.NewReader("password=newPassword&oldPassword=myComplexPassword")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": "success",
+    "content": null,
+    "message": "Your password updated successfully."
+}
+```
+
+This endpoint logouts the user from Mashvisor.
+
+### HTTP Request
+
+`POST https://api.mashvisor.com/v1/user/password/update` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} |
+Content-Type | application/x-www-form-urlencoded |
+
+### Form Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+password | String | | new password
+oldPassword | String | | old password
 
 ## Reset Password
 
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+RequestBody body = RequestBody.create(mediaType, "token=%7BRESET_TOKEN%7D&password=newPassword");
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/password/reset")
+  .post(body)
+  .addHeader("content-type", "application/x-www-form-urlencoded")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/password/reset",
+  "method": "POST",
+  "headers": {
+    "content-type": "application/x-www-form-urlencoded"
+  },
+  "data": {
+    "token": "{RESET_TOKEN}",
+    "password": "newPassword"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/password/reset');
+$request->setMethod(HTTP_METH_POST);
+
+$request->setHeaders(array(
+  'content-type' => 'application/x-www-form-urlencoded'
+));
+
+$request->setContentType('application/x-www-form-urlencoded');
+$request->setPostFields(array(
+  'token' => '{RESET_TOKEN}',
+  'password' => 'newPassword'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/password/reset"
+
+	payload := strings.NewReader("token=%7BRESET_TOKEN%7D&password=newPassword")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": "success",
+    "content": null,
+    "message": "User Reset Password succeeded"
+}
+```
+
+This endpoint allows the user who forget his password to reset his/her password.
+
+### HTTP Request
+
+`POST https://api.mashvisor.com/v1/user/password/reset` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Content-Type | application/x-www-form-urlencoded |
+
+### Form Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+token | String | | User Password reset token
+password | String | | Password that includes at least (1digit, 1 capital + 1 small letter, 1 special "!@#$%" character
+
 ## Reset Password Request
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+RequestBody body = RequestBody.create(mediaType, "email=ahmadh%40mashvisor.com&appUrl=https%3A%2F%2Fwww.mashvisor.com%2Fpassword-reset");
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/password/reset/request")
+  .post(body)
+  .addHeader("content-type", "application/x-www-form-urlencoded")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/password/reset/request",
+  "method": "POST",
+  "headers": {
+    "content-type": "application/x-www-form-urlencoded"
+  },
+  "data": {
+    "email": "ahmadh@mashvisor.com",
+    "appUrl": "https://www.mashvisor.com/password-reset"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/password/reset/request');
+$request->setMethod(HTTP_METH_POST);
+
+$request->setHeaders(array(
+  'content-type' => 'application/x-www-form-urlencoded'
+));
+
+$request->setContentType('application/x-www-form-urlencoded');
+$request->setPostFields(array(
+  'email' => 'ahmadh@mashvisor.com',
+  'appUrl' => 'https://www.mashvisor.com/password-reset'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/password/reset/request"
+
+	payload := strings.NewReader("email=ahmadh%40mashvisor.com&appUrl=https%3A%2F%2Fwww.mashvisor.com%2Fpassword-reset")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": "success",
+    "content": null,
+    "message": "Reset password request succeeded, check your email for reset password link"
+}
+```
+
+This endpoint allows the user who forget his password to reset it by sending him/her a link to his email for the password reset page along with a password reset token.
+
+### HTTP Request
+
+`POST https://api.mashvisor.com/v1/user/password/reset/request` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Content-Type | application/x-www-form-urlencoded |
+
+### Form Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+email | String | | The Mashvisor registereation email
+appUrl | String | | Password reset page, ex: https://www.mashvisor.com/password-reset
 
 ## Check Subscription
 
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/579/check/subscription?_t=meowmeowmeow")
+  .get()
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/579/check/subscription?_t=meowmeowmeow",
+  "method": "GET",
+  "headers": {
+    "authorization": "Bearer {JWT_TOKEN}"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/579/check/subscription');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow'
+));
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/579/check/subscription?_t=meowmeowmeow"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": "success",
+    "content": {
+        "results": [
+            {
+                "start_date_formatted": "06/07/2017",
+                "start_date": "2017-06-07 12:26:48.0",
+                "end_date_formatted": "06/07/2018",
+                "end_date": "2018-06-07 12:26:48.0",
+                "valid": true,
+                "plan": "MASHVISOR_TOP_AGENT",
+                "plan_recurring": "ANNUAL",
+                "customer_id": "cus_AneYgmrIO3ia2I",
+                "subscription_amount": 4500,
+                "payment_method": "stripe",
+                "transition_id": null
+            }
+        ]
+    },
+    "message": "Fetched user subscription profile successfully"
+}
+```
+
+This endpoint retrieves the current user subscription.
+
+### HTTP Request
+
+`GET http://api.mashvisor.com/v1/user/{user_id}/check/subscription` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
 ## Save Favorite Proeprty
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+RequestBody body = RequestBody.create(mediaType, "property=1&type=Investment");
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/favorite/property/save")
+  .post(body)
+  .addHeader("content-type", "application/x-www-form-urlencoded")
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .addHeader("cache-control", "no-cache")
+  .addHeader("postman-token", "13f3d6b2-42a2-9759-dac2-1eb364b71547")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/favorite/property/save",
+  "method": "POST",
+  "headers": {
+    "content-type": "application/x-www-form-urlencoded",
+    "authorization": "Bearer {JWT_TOKEN}"
+  },
+  "data": {
+    "property": "1",
+    "type": "Investment"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/favorite/property/save');
+$request->setMethod(HTTP_METH_POST);
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}',
+  'content-type' => 'application/x-www-form-urlencoded'
+));
+
+$request->setContentType('application/x-www-form-urlencoded');
+$request->setPostFields(array(
+  'property' => '1',
+  'type' => 'Investment'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/favorite/property/save"
+
+	payload := strings.NewReader("property=1&type=Investment")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": null,
+  "message": "User fav property saved successfully."
+}
+
+{
+  "status": "success",
+  "content": null,
+  "message": "User fav property unsaved successfully."
+}
+```
+
+This endpoint saves/deletes the user favorite property in the database.
+
+### HTTP Request
+
+`POST http://api.mashvisor.com/v1/user/favorite/property/save` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Query Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+state | String | | The state belongs to the property.
+
+### Form Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+property | Long | | The Mashvisor property id..
+type | String | | Airbnb, Traditional, or Investment.
 
 ## Get User Permissions
 
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/579/permissions?_t=meowmeowmeow")
+  .get()
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/579/permissions?_t=meowmeowmeow",
+  "method": "GET",
+  "headers": {
+    "authorization": "Bearer {JWT_TOKEN}"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/579/permissions');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow'
+));
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/579/permissions?_t=meowmeowmeow"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": {
+    "user_id": 113,
+    "subscription_plan": "MASHVISOR_BASIC",
+    "valid_plan": true,
+    "results": [
+      {
+        "resource": "SEARCH::Investment_Property",
+        "access": "true",
+        "resource_limit": 0
+      },
+      {
+        "resource": "SEARCH::Airbnb_Property",
+        "access": "true",
+        "resource_limit": 0
+      },
+      {
+        "resource": "SEARCH::Traditional_Property",
+        "access": "true",
+        "resource_limit": 0
+      },
+      {
+        "resource": "EXPORT::Investment_Property",
+        "access": "true",
+        "resource_limit": 5
+      },
+      {
+        "resource": "EXPORT::Airbnb_Property",
+        "access": "true",
+        "resource_limit": 5
+      },
+      {
+        "resource": "EXPORT::Traditional_Property",
+        "access": "true",
+        "resource_limit": 5
+      },
+      {
+        "resource": "HEATMAP::Listing_Price",
+        "access": "true",
+        "resource_limit": 0
+      },
+      {
+        "resource": "HEATMAP::Airbnb_CoC",
+        "access": "true",
+        "resource_limit": 0
+      },
+      {
+        "resource": "HEATMAP::Traditional_Coc",
+        "access": "true",
+        "resource_limit": 0
+      },
+      {
+        "resource": "HEATMAP::Occupancy_Rate",
+        "access": "true",
+        "resource_limit": 0
+      },
+      {
+        "resource": "HEATMAP::Airbnb_Rental",
+        "access": "true",
+        "resource_limit": 0
+      },
+      {
+        "resource": "HEATMAP::Traditional_Rental",
+        "access": "true",
+        "resource_limit": 0
+      }
+    ]
+  },
+  "message": "Fetched user permissions successfully"
+}
+```
+
+> The above command returns JSON structured like this if the token is invalid or fake:
+
+```json
+{
+  "status": "success",
+  "content": {
+    "results": [
+      {
+        "resource": "SEARCH::Investment_Property",
+        "access": "false",
+        "resource_limit": 0
+      },
+      {
+        "resource": "SEARCH::Airbnb_Property",
+        "access": "false",
+        "resource_limit": 0
+      },
+      {
+        "resource": "SEARCH::Traditional_Property",
+        "access": "false",
+        "resource_limit": 0
+      },
+      {
+        "resource": "EXPORT::Investment_Property",
+        "access": "false",
+        "resource_limit": 0
+      },
+      {
+        "resource": "EXPORT::Airbnb_Property",
+        "access": "false",
+        "resource_limit": 0
+      },
+      {
+        "resource": "EXPORT::Traditional_Property",
+        "access": "false",
+        "resource_limit": 0
+      },
+      {
+        "resource": "HEATMAP::Listing_Price",
+        "access": "false",
+        "resource_limit": 0
+      },
+      {
+        "resource": "HEATMAP::Airbnb_CoC",
+        "access": "false",
+        "resource_limit": 0
+      },
+      {
+        "resource": "HEATMAP::Traditional_Coc",
+        "access": "false",
+        "resource_limit": 0
+      },
+      {
+        "resource": "HEATMAP::Occupancy_Rate",
+        "access": "false",
+        "resource_limit": 0
+      },
+      {
+        "resource": "HEATMAP::Airbnb_Rental",
+        "access": "false",
+        "resource_limit": 0
+      },
+      {
+        "resource": "HEATMAP::Traditional_Rental",
+        "access": "false",
+        "resource_limit": 0
+      }
+    ]
+  },
+  "message": "Fetched user permissions successfully"
+}
+```
+
+This endpoint retrieves the users permissions.
+
+### HTTP Request
+
+`GET http://api.mashvisor.com/v1/user/{user_id}/permissions` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
 ## Get Transactions
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/579/transactions?_t=meowmeowmeow")
+  .get()
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/579/transactions?_t=meowmeowmeow",
+  "method": "GET",
+  "headers": {
+    "authorization": "Bearer {JWT_TOKEN}"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/579/transactions');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow'
+));
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/579/transactions?_t=meowmeowmeow"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": {
+    "user_id": 113,
+    "total_results": 3,
+    "charges": [
+      {
+        "id": "ch_17QEmGGYREWu4WN3CprsK75i",
+        "user_subscription_id": 102,
+        "created_at": "Jan 06,2016",
+        "amount": 44.99,
+        "amount_refunded": 0,
+        "refunded": false,
+        "currency": "usd",
+        "customer": null,
+        "invoice": null,
+        "paid": true,
+        "plan": "BASIC / ONCE",
+        "method": "MasterCard FINISHED IN 4444"
+      },
+      {
+        "id": "ch_17QEybGYREWu4WN3DRJSJjEf",
+        "user_subscription_id": 103,
+        "created_at": "Jan 06,2016",
+        "amount": 44.99,
+        "amount_refunded": 0,
+        "refunded": false,
+        "currency": "usd",
+        "customer": null,
+        "invoice": null,
+        "paid": true,
+        "plan": "BASIC / ONCE",
+        "method": "MasterCard FINISHED IN 4444"
+      },
+      {
+        "id": "ch_17QFEjGYREWu4WN3g5x3yIL4",
+        "user_subscription_id": 104,
+        "created_at": "Jan 06,2016",
+        "amount": 44.99,
+        "amount_refunded": 0,
+        "refunded": false,
+        "currency": "usd",
+        "customer": null,
+        "invoice": null,
+        "paid": true,
+        "plan": "BASIC / ONCE",
+        "method": "Visa FINISHED IN 4242"
+      }
+    ]
+  },
+  "message": "Fetched user charges successfully"
+}
+```
+
+This endpoint retrieves the users transactions made on Stripe.
+
+### HTTP Request
+
+`GET http://api.mashvisor.com/v1/user/{user_id}/transactions` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
+### Query Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+year | Integer | | Filter to fetch the transctions since. e.g: 2017
 
 ## Save Proeprty Notes
 
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+RequestBody body = RequestBody.create(mediaType, "property=1&tags=Bookings&state=CA");
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/favorite/property/notes")
+  .post(body)
+  .addHeader("content-type", "application/x-www-form-urlencoded")
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/favorite/property/notes",
+  "method": "POST",
+  "headers": {
+    "content-type": "application/x-www-form-urlencoded",
+    "authorization": "Bearer {JWT_TOKEN}"
+  },
+  "data": {
+    "property": "1",
+    "tags": "Bookings",
+    "state": "CA"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/favorite/property/notes');
+$request->setMethod(HTTP_METH_POST);
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}',
+  'content-type' => 'application/x-www-form-urlencoded'
+));
+
+$request->setContentType('application/x-www-form-urlencoded');
+$request->setPostFields(array(
+  'property' => '1',
+  'tags' => 'Bookings',
+  'state' => 'CA'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/favorite/property/notes"
+
+	payload := strings.NewReader("property=1&tags=Bookings&state=CA")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": {
+    "id": 3,
+    "user_id": 351,
+    "property_id": 13837,
+    "rating": 1,
+    "tenant_occupied": true,
+    "property_status": "No Longer Interested",
+    "tags": "Invetsment, Airbnb",
+    "notes": null
+  },
+  "message": "User property's notes saved successfully."
+}
+```
+
+This endpoint saves the user property notes for a specific property.
+
+### HTTP Request
+
+`POST http://api.mashvisor.com/v1/user/property/notes` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+Content-Type | application/x-www-form-urlencoded | 
+
+### FORM Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+property | Long | | 	Mashvisor Investment property id, e.g: 34804
+rating | Integer | | 1 to 5, 5 is the best rating
+tenant | Boolean | | is the tenant occupied or not
+status | String | | 
+tags | String | | Any tags from the user
+notes | String | | 	Any string from the user
+state | String | | The state that the property belongs to.
+
 ## Get Payment Details
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/579/payment/details?_t=meowmeowmeow")
+  .get()
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/579/payment/details?_t=meowmeowmeow",
+  "method": "GET",
+  "headers": {
+    "authorization": "Bearer {JWT_TOKEN}"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/579/payment/details');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow'
+));
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/579/payment/details?_t=meowmeowmeow"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": {
+    "card_info": [
+      {
+        "name": "Ahmad Hashlamoun",
+        "plan_recurring": "MONTHLY",
+        "last_four": "4444",
+        "brand": "MasterCard",
+        "expires_at": "12/2030"
+      }
+    ]
+  },
+  "message": "User payment details fetched successfully."
+}
+```
+
+This endpoint retrieves the user's payment info (Card info).
+
+### HTTP Request
+
+`GET http://api.mashvisor.com/v1/user/{user_id}/payment/details` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
 
 ## Update Payment Details
 
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+RequestBody body = RequestBody.create(mediaType, "name=Ahmad%20Hashlamoun&credit_card=5555555555554444&exp_month=3&exp_year=2030&cvc=2222");
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/579/payment/details")
+  .post(body)
+  .addHeader("content-type", "application/x-www-form-urlencoded")
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/579/payment/details",
+  "method": "POST",
+  "headers": {
+    "content-type": "application/x-www-form-urlencoded",
+    "authorization": "Bearer {JWT_TOKEN}"
+  },
+  "data": {
+    "name": "Ahmad Hashlamoun",
+    "credit_card": "5555555555554444",
+    "exp_month": "3",
+    "exp_year": "2030",
+    "cvc": "2222"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/579/payment/details');
+$request->setMethod(HTTP_METH_POST);
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}',
+  'content-type' => 'application/x-www-form-urlencoded'
+));
+
+$request->setContentType('application/x-www-form-urlencoded');
+$request->setPostFields(array(
+  'name' => 'Ahmad Hashlamoun',
+  'credit_card' => '5555555555554444',
+  'exp_month' => '3',
+  'exp_year' => '2030',
+  'cvc' => '2222'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/579/payment/details"
+
+	payload := strings.NewReader("name=Ahmad%20Hashlamoun&credit_card=5555555555554444&exp_month=3&exp_year=2030&cvc=2222")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": {
+    "card_info": [
+      {
+        "name": "Ahmad Hashlamoun",
+        "plan_recurring": "MONTHLY",
+        "last_four": "4444",
+        "brand": "MasterCard",
+        "expires_at": "12/2030"
+      }
+    ]
+  },
+  "message": "User credit card updated successfully."
+}
+```
+
+This endpoint updates the user's credit card info based on params you send.
+
+### HTTP Request
+
+`POST http://api.mashvisor.com/v1/user/{user_id}/payment/details` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
+### Form Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+name | String | | Credit card holder name
+credit_card | Integer | | Credit card number, e.g: 5555555555554444
+exp_month | String | | Credit card expires on month, e.g: 3
+exp_year | Integer | | Credit card expires on year, e.g: 2030
+cvc | Integer | | Credit card CVC number, e.g: 2222
+
 ## Export Invoice
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/579/invoice/export?_xt=%7Bbase64%20JWT_TOKEN%7D&plan_id=1058&charge_id=ch_188tXXGYREWu4XN3ESfXXXX&_t=meowmeowmeow")
+  .get()
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/579/invoice/export?_xt=%7Bbase64%20JWT_TOKEN%7D&plan_id=1058&charge_id=ch_188tXXGYREWu4XN3ESfXXXX&_t=meowmeowmeow",
+  "method": "GET"
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/579/invoice/export');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  '_xt' => '{base64 JWT_TOKEN}',
+  'plan_id' => '1058',
+  'charge_id' => 'ch_188tXXGYREWu4XN3ESfXXXX',
+  '_t' => 'meowmeowmeow'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/579/invoice/export?_xt=%7Bbase64%20JWT_TOKEN%7D&plan_id=1058&charge_id=ch_188tXXGYREWu4XN3ESfXXXX&_t=meowmeowmeow"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+
+This endpoint exports a pdf file of the transaction (Stripe's charge) specified.
+
+### HTTP Request
+
+`GET http://api.mashvisor.com/v1/user/{user_id}/invoice/export` 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
+### Form Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+charge_id | Integer | | Stripe's charge id card number, e.g: ch_188tXXGYREWu4XN3ESfXXXX
+plan_id | String | | The User subscription plan id, e.g: 1050
+_xt | String | | Base64 encoded value of the user JWT_TOKEN
 
 ## Print Invoice
 
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/579/invoice/print?_xt=%7Bbase64%20JWT_TOKEN%7D&plan_id=1058&charge_id=ch_188tXXGYREWu4XN3ESfXXXX&_t=meowmeowmeow")
+  .get()
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/579/invoice/print?_xt=%7Bbase64%20JWT_TOKEN%7D&plan_id=1058&charge_id=ch_188tXXGYREWu4XN3ESfXXXX&_t=meowmeowmeow",
+  "method": "GET"
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/579/invoice/print');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  '_xt' => '{base64 JWT_TOKEN}',
+  'plan_id' => '1058',
+  'charge_id' => 'ch_188tXXGYREWu4XN3ESfXXXX',
+  '_t' => 'meowmeowmeow'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/579/invoice/print?_xt=%7Bbase64%20JWT_TOKEN%7D&plan_id=1058&charge_id=ch_188tXXGYREWu4XN3ESfXXXX&_t=meowmeowmeow"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": "success",
+    "content": {
+      "invoice_html":
+        "raw html data"
+    },
+    "message": "Fetched user invoice successfully"
+}
+```
+
+This endpoint prints a pdf file of the transaction (Stripe's charge) specified.
+
+### HTTP Request
+
+`GET http://api.mashvisor.com/v1/user/{user_id}/invoice/print` 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
+### Form Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+charge_id | Integer | | Stripe's charge id card number, e.g: ch_188tXXGYREWu4XN3ESfXXXX
+plan_id | String | | The User subscription plan id, e.g: 1050
+_xt | String | | Base64 encoded value of the user JWT_TOKEN
+
 ## Save Cancellation Feedback
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+RequestBody body = RequestBody.create(mediaType, "option=my%20first%20option&notes=my%20notes");
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/account/feedback")
+  .post(body)
+  .addHeader("content-type", "application/x-www-form-urlencoded")
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/account/feedback",
+  "method": "POST",
+  "headers": {
+    "content-type": "application/x-www-form-urlencoded",
+    "authorization": "Bearer {JWT_TOKEN}"
+  },
+  "data": {
+    "option": "my first option",
+    "notes": "my notes"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/account/feedback');
+$request->setMethod(HTTP_METH_POST);
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}',
+  'content-type' => 'application/x-www-form-urlencoded'
+));
+
+$request->setContentType('application/x-www-form-urlencoded');
+$request->setPostFields(array(
+  'option' => 'my first option',
+  'notes' => 'my notes'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/account/feedback"
+
+	payload := strings.NewReader("option=my%20first%20option&notes=my%20notes")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status":"success",
+    "content":null,
+    "message":"Cancellation FeedBack is registered"
+}
+```
+
+This endpoint saves the user's cancellation feedback.
+
+### HTTP Request
+
+`POST http://api.mashvisor.com/v1/user/account/feedback` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+Content-Type | application/x-www-form-urlencoded | 
+
+### Form Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+option | String | | User cancellation feedback option
+notes | String | | User Cancellation feedback notes
 
 ## Check Favorite Properties
 
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/favorite/properties?state=CA&properties=2901%2C%20263817%2C%20263995%2C%20265546%2C%20263852&type=Investment")
+  .get()
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/favorite/properties?state=CA&properties=2901%2C%20263817%2C%20263995%2C%20265546%2C%20263852&type=Investment",
+  "method": "GET",
+  "headers": {
+    "authorization": "Bearer {JWT_TOKEN}"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/favorite/properties');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  'state' => 'CA',
+  'properties' => '2901, 263817, 263995, 265546, 263852',
+  'type' => 'Investment'
+));
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/favorite/properties?state=CA&properties=2901%2C%20263817%2C%20263995%2C%20265546%2C%20263852&type=Investment"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": {
+    "2901": true,
+    "263817": true,
+    "263852": false,
+    "263995": false,
+    "265546": false
+  },
+  "message": "User fav property fetched successfully."
+}
+```
+
+This endpoint retrieves the received properties status weather the user saved them or not
+
+### HTTP Request
+
+`GET https://api.mashvisor.com/v1/user/favorite/properties` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Query Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+state | String | | The state the properties belongs to
+properties | String | | properties=2901, 263817, 263995, 265546, 263852
+type | String | | Investment, Airbnb, Traditional
+
 ## Validate Phone Number
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/validate/phoneNumber?_t=meowmeowmeow&phone_number=%2016502520530")
+  .get()
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/validate/phoneNumber?_t=meowmeowmeow&phone_number=%2016502520530",
+  "method": "GET",
+  "headers": {
+    "authorization": "Bearer {JWT_TOKEN}"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/validate/phoneNumber');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow',
+  'phone_number' => ' 16502520530'
+));
+
+$request->setHeaders(array(
+  'postman-token' => '7fe7dd35-87fc-a703-18c0-df379d348dad'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/validate/phoneNumber?_t=meowmeowmeow&phone_number=%2016502520530"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": {
+    "caller_name": "YOU TUBE",
+    "phone_number": "+16502530000",
+    "national_format": "(650) 253-0000",
+    "carrier": null,
+    "url": "https://lookups.twilio.com/v1/PhoneNumbers/+16502530000?Type=caller-name",
+    "caller_type": "BUSINESS",
+    "error_code": null
+  },
+  "message": "The requested PhoneNumbers 6502530000 was found"
+}
+```
+
+This endpoint validates the user phone number provided by him from Twilio service and returns the user phone info.
+
+### HTTP Request
+
+`GET https://api.mashvisor.com/v1/user/validate/phoneNumber` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Query Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+phone_number | String | | The user's phone number, ex: 6502530000
 
 ## Save Image
 
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/json");
+RequestBody body = RequestBody.create(mediaType, "{\n\t\"image\":\"{Base64 image's payload}\",\n\t\"suffix\":\"profile\"\n}");
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1.1/user/579/images?_t=meowmeowmeow")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1.1/user/579/images?_t=meowmeowmeow",
+  "method": "POST",
+  "headers": {
+    "content-type": "application/json",
+    "authorization": "Bearer {JWT_TOKEN}"
+  },
+  "processData": false,
+  "data": "{\n\t\"image\":\"{Base64 image's payload}\",\n\t\"suffix\":\"profile\"\n}"
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1.1/user/579/images');
+$request->setMethod(HTTP_METH_POST);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow'
+));
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}',
+  'content-type' => 'application/json'
+));
+
+$request->setBody('{
+	"image":"{Base64 image's payload}",
+	"suffix":"profile"
+}');
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1.1/user/579/images?_t=meowmeowmeow"
+
+	payload := strings.NewReader("{\n\t\"image\":\"{Base64 image's payload}\",\n\t\"suffix\":\"profile\"\n}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": "https://bc9f40b414b80XXXXXXX-212b46bXX31b50ebb00763XXXX70160.ssl.cf5.rackcdn.com/UserImages/579/579_profile.png"
+}
+```
+
+This endpoint saves the user headshot or agency images in Mashvisor's Rackspace storage space.
+
+### HTTP Request
+
+`POST https://api.mashvisor.com/v1.1/user/{user_id}/images` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Content-Type | application/json | 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
+### Body Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+image | String | | Base64 image's payload
+suffix | String | profile | "profile" or "agency"
+
 ## Delete Image
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/json");
+RequestBody body = RequestBody.create(mediaType, "{\n\t\"suffix\":\"profile\"\n}");
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1.1/user/579/images/delete?_t=meowmeowmeow")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1.1/user/579/images/delete?_t=meowmeowmeow",
+  "method": "POST",
+  "headers": {
+    "content-type": "application/json",
+    "authorization": "Bearer {JWT_TOKEN}"
+  },
+  "processData": false,
+  "data": "{\n\t\"suffix\":\"profile\"\n}"
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1.1/user/579/images/delete');
+$request->setMethod(HTTP_METH_POST);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow'
+));
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}',
+  'content-type' => 'application/json'
+));
+
+$request->setBody('{
+	"suffix":"profile"
+}');
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1.1/user/579/images/delete?_t=meowmeowmeow"
+
+	payload := strings.NewReader("{\n\t\"suffix\":\"profile\"\n}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": "The file 579_agency.png have been deleted successfully."
+}
+```
+
+This endpoint deletes the user headshot or agency images in Mashvisor's Rackspace storage space.
+
+### HTTP Request
+
+`POST https://api.mashvisor.com/v1.1/user/{user_id}/images/delete` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Content-Type | application/json | 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
+### Body Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+suffix | String | profile | "profile" or "agency"
 
 ## Save Agent Featured Location
 
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+RequestBody body = RequestBody.create(mediaType, "city=San%20Francisco&state=CA");
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/579/agent/area?_t=meowmeowmeow")
+  .post(body)
+  .addHeader("content-type", "application/x-www-form-urlencoded")
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .addHeader("cache-control", "no-cache")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/579/agent/area?_t=meowmeowmeow",
+  "method": "POST",
+  "headers": {
+    "content-type": "application/x-www-form-urlencoded",
+    "authorization": "Bearer {JWT_TOKEN}"
+  },
+  "data": {
+    "city": "San Francisco",
+    "state": "CA"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/579/agent/area');
+$request->setMethod(HTTP_METH_POST);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow'
+));
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}',
+  'content-type' => 'application/x-www-form-urlencoded'
+));
+
+$request->setContentType('application/x-www-form-urlencoded');
+$request->setPostFields(array(
+  'city' => 'San Francisco',
+  'state' => 'CA'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/579/agent/area?_t=meowmeowmeow"
+
+	payload := strings.NewReader("city=San%20Francisco&state=CA")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("postman-token", "0b662f75-510b-43ed-8c2d-007945e442b7")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": {
+    "id": 3,
+    "agent_id": 579,
+    "city": null,
+    "state": null,
+    "zipcode": 60026
+  },
+  "message": "Agent featured location saved successfully."
+}
+```
+
+This endpoint saves the AGENT featured zip code or city, state in the AgentCity table.
+
+### HTTP Request
+
+`POST https://api.mashvisor.com/v1/user/{user_id}/agent/area` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Content-Type | application/x-www-form-urlencoded | 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
+### Form Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+city | String |  | The agent's city to be shown on the properties agents card along with the state
+state | String |  | The agent's state to be shown on the properties agents card along with the city
+zip_code | String |  | The agent's zip code to be shown on the properties agents card
+
 ## Delete Agent Featured Location
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+RequestBody body = RequestBody.create(mediaType, "city=San%20Francisco&state=CA");
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/579/agent/area/delete?_t=meowmeowmeow")
+  .post(body)
+  .addHeader("content-type", "application/x-www-form-urlencoded")
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/579/agent/area/delete?_t=meowmeowmeow",
+  "method": "POST",
+  "headers": {
+    "content-type": "application/x-www-form-urlencoded",
+    "authorization": "Bearer {JWT_TOKEN}"
+  },
+  "data": {
+    "city": "San Francisco",
+    "state": "CA"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/579/agent/area/delete');
+$request->setMethod(HTTP_METH_POST);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow'
+));
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}',
+  'content-type' => 'application/x-www-form-urlencoded'
+));
+
+$request->setContentType('application/x-www-form-urlencoded');
+$request->setPostFields(array(
+  'city' => 'San Francisco',
+  'state' => 'CA'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/579/agent/area/delete?_t=meowmeowmeow"
+
+	payload := strings.NewReader("city=San%20Francisco&state=CA")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": null,
+  "message": "Agent featured location deleted successfully."
+}
+```
+
+This endpoint deletes the AGENT featured zip code or city, state in the AgentCity table.
+
+### HTTP Request
+
+`POST https://api.mashvisor.com/v1/user/{user_id}/agent/area/delete` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Content-Type | application/x-www-form-urlencoded | 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
+### Form Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+city | String |  | The agent's city to be deleted on the properties agents card along with the state
+state | String |  | The agent's state to be deleted on the properties agents card along with the city
+zip_code | String |  | The agent's zip code to be deleted on the properties agents card
 
 ## Refresh JWT Token
 
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/579/refresh/token?_t=meowmeowmeow")
+  .get()
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/579/refresh/token?_t=meowmeowmeow",
+  "method": "GET",
+  "headers": {
+    "authorization": "Bearer {JWT_TOKEN}"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/579/refresh/token');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow'
+));
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/579/refresh/token?_t=meowmeowmeow"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": "success",
+  "content": {
+    "auth_token": "{{JWT_TOKEN}}",
+    "token_expires_at": 1496672539000
+  },
+  "message": "Refresh token succeeded"
+}
+```
+
+This endpoint refreshs the user's JWT token and its info.
+
+### HTTP Request
+
+`GET https://api.mashvisor.com/v1/user/{user_id}/refresh/token` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
+
+
 ## Verify Feedback Pop-up
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api-build.mashvisor.com/v1/user/579/verify/feedback?_t=meowmeowmeow")
+  .get()
+  .addHeader("authorization", "Bearer {JWT_TOKEN}")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```javascript
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api-build.mashvisor.com/v1/user/579/verify/feedback?_t=meowmeowmeow",
+  "method": "GET",
+  "headers": {
+    "authorization": "Bearer {JWT_TOKEN}"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://api-build.mashvisor.com/v1/user/579/verify/feedback');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  '_t' => 'meowmeowmeow'
+));
+
+$request->setHeaders(array(
+  'authorization' => 'Bearer {JWT_TOKEN}'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://api-build.mashvisor.com/v1/user/579/verify/feedback?_t=meowmeowmeow"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("authorization", "Bearer {JWT_TOKEN}")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": "success",
+    "content": {
+        "show_popup": true
+    },
+    "message": "User has no previous sessions."
+}
+//
+{
+    "status": "success",
+    "content": {
+        "show_popup": false
+    },
+    "message": "User has already filled the agent feedback survey"
+}
+//
+{
+    "status": "success",
+    "content": {
+        "show_popup": true
+    },
+    "message": "User has previous sessions."
+}
+//
+{
+    "status": "success",
+    "content": {
+        "show_popup": false
+    },
+    "message": "User has already filled the feedback survey"
+}
+```
+
+This endpoint verifies to show the user feedback pop up or not.
+
+### HTTP Request
+
+`GET https://api.mashvisor.com/v1/user/{user_id}/verify/feedback` 
+
+### Request Headers
+
+Parameter | Value | Default 
+--------- | ------- | ------- 
+Authorization | User Authentication JWT Token, ex:Bearer {JWT_TOKEN} | 
+
+### Path Parameters
+
+Parameter | Value | Default | Description
+--------- | ------- | ------- | -----------
+user_id | Long | | The Mashvisor id of the registered user.
